@@ -1,27 +1,10 @@
 local Toolbar = plugin:CreateToolbar("My Dude")
 
 local ChatButton = Toolbar:CreateButton("My AI Dudes", "Poser une question sur le code", "")
-local TestButton = Toolbar:CreateButton("Test Export", "Tester ExportFolderStructureScript", "")
-local TestUI = Toolbar:CreateButton("Test UI", "Tester ScreenUI", "")
-local AnalyzerButton = Toolbar:CreateButton("Analyzer", "Analyze dependencies", "")
 
-
-
--- Require les modules
-local ExporterFolderStructure = require(script.Parent:WaitForChild("ExportFolderStructureScript"))
-local DependenciesAnalyzer = require(script.Parent:WaitForChild("DependenciesAnalyzer"))
 -- Charger Roact & ton module UI
 local Roact = require(script.Parent.Roact)
 local ChatInterface = require(script.Parent.ChatInterfaceScript)
-
-TestButton.Click:Connect(function()
-	ExporterFolderStructure.Export()
-end)
-
-AnalyzerButton.Click:Connect(function()
-	DependenciesAnalyzer.Analyze()
-end)
-
 
 local widgetInfo = DockWidgetPluginGuiInfo.new(
 	Enum.InitialDockState.Right,
