@@ -5,11 +5,9 @@ local HttpService = game:GetService("HttpService")
 local StudioService = game:GetService("StudioService")
 local Roact = require(script.Parent.Roact)
 local Session = require(script.Parent.SharedState.Session)
-local ChatPage = require(script.Parent.Pages.ChatPage)
 local CodeAnalysisPage = require(script.Parent.Pages.CodeAnalysisPage)
 local WebhookRouter = require(script.Parent.WebhookRouter)
 local ExporterFolderStructure = require(script.Parent.ExportFolderStructureScript)
-
 
 
 local handle = nil
@@ -118,7 +116,7 @@ function ChatInterface:init()
 
 			if success then
 				local decoded = HttpService:JSONDecode(result)
-				local content = decoded.message and decoded.message.content or decoded.output or "Pas de r�ponse."
+				local content = decoded.message and decoded.message.content or decoded.output or "Pas de réponse."
 				table.insert(newMessages, { type = "assistant", content = formatRichText(content) })
 			else
 				table.insert(newMessages, { type = "assistant", content = "? Erreur : " .. tostring(result) })
@@ -151,7 +149,7 @@ function ChatInterface:renderNav()
 	if isNarrow then
 		--[[children = {
 			Title = Roact.createElement("TextLabel", {
-				Text = "?? Rblx Assistant",
+				Text = "🤖 Rblx Assistant",
 				Font = Enum.Font.GothamBold,
 				TextSize = 20,
 				TextColor3 = Color3.fromRGB(255, 255, 255),
@@ -162,7 +160,7 @@ function ChatInterface:renderNav()
 	else
 		children = {
 			Title = Roact.createElement("TextLabel", {
-				Text = "?? Rblx Assistant",
+				Text = "🤖 Rblx Assistant",
 				Font = Enum.Font.GothamBold,
 				TextSize = 20,
 				TextColor3 = Color3.fromRGB(255, 255, 255),
@@ -180,7 +178,7 @@ function ChatInterface:renderNav()
 				end,
 			}),
 			SearchBar = Roact.createElement("TextBox", {
-				PlaceholderText = "?? Rechercher",
+				PlaceholderText = "🔍 Rechercher",
 				Text = "",
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
@@ -197,32 +195,18 @@ end
 function ChatInterface:renderPage()
 	local page = self.state.currentPage
 
-	if page == "Chat" then
-		return ChatPage({
-			isNarrow = self.state.isNarrow,
-			input = self.state.input,
-			response = self.state.messages, -- changed to use full message history
-			loading = self.state.loading,
-			onInputChanged = self.onInputChanged,
-			onSend = self.onSend,
-			setPage = function(pageName)
-				self:setState({ currentPage = pageName })
-			end,
-		})
-	elseif page == "CodeAnalysis" then
-		return CodeAnalysisPage({
-			input = self.state.input,
-			response = self.state.messages, -- changed to use full message history
-			loading = self.state.loading,
-			onInputChanged = self.onInputChanged,
-			onSend = self.onSend,
-			onToggleContext = function()
-				self:setState({ showContext = not self.state.showContext })
-			end,
-			dropdownOpen = self.state.dropdownOpen,
-			showContext = self.state.showContext,
-		})
-	end
+	return CodeAnalysisPage({
+		input = self.state.input,
+		response = self.state.messages, -- changed to use full message history
+		loading = self.state.loading,
+		onInputChanged = self.onInputChanged,
+		onSend = self.onSend,
+		onToggleContext = function()
+			self:setState({ showContext = not self.state.showContext })
+		end,
+		dropdownOpen = self.state.dropdownOpen,
+		showContext = self.state.showContext,
+	})
 end
 
 function ChatInterface:render()
