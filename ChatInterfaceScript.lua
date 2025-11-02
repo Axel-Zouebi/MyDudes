@@ -83,24 +83,17 @@ function ChatInterface:init()
 
 		-- Prepare payload
 		local payload
-		if page == "CodeAnalysis" then
-			local activeScript = StudioService.ActiveScript and StudioService.ActiveScript.Source or ""
-			local filePath = StudioService.ActiveScript and StudioService.ActiveScript:GetFullName() or ""
-			local folderStructure = ExporterFolderStructure.Export()
+		local activeScript = StudioService.ActiveScript and StudioService.ActiveScript.Source or ""
+		local filePath = StudioService.ActiveScript and StudioService.ActiveScript:GetFullName() or ""
+		local folderStructure = ExporterFolderStructure.Export()
 
-			payload = {
-				scriptCode = activeScript,
-				errorMessage = input,
-				filePath = filePath,
-				folderStructure = folderStructure,
-				sessionId = Session[sessionKey]
-			}
-		else -- fallback for "Chat"
-			payload = {
-				question = input,
-				sessionId = Session[sessionKey]
-			}
-		end
+		payload = {
+			scriptCode = activeScript,
+			errorMessage = input,
+			filePath = filePath,
+			folderStructure = folderStructure,
+			sessionId = Session[sessionKey]
+		}
 
 		task.spawn(function()
 			local success, result = pcall(function()
